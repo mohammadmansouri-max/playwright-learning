@@ -1,0 +1,17 @@
+let users = [
+  { id: 1, name: "Ali" },
+  { id: 2, name: "Sara" },
+  { id: 3, name: "John" },
+  { id: 4, name: "Emma" }
+];
+
+let foundUser = null;
+
+for (let user of users) {
+  if (user.id == 4) {
+    foundUser = user;
+    break;
+  }
+}
+
+console.log(foundUser);

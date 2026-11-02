@@ -1,0 +1,45 @@
+// Beginner-friendly Playwright login test.
+// The provided file was empty; no app URL or existing Playwright setup was available to inspect.
+// Check the project's package.json and Playwright config, then supply the real values below via environment variables.
+// The page must expose accessible labels "Username" and "Password", and a button named "Login".
+
+// Import Playwright's test runner and assertion helper (requires @playwright/test in the project).
+const { test, expect } = require('@playwright/test');
+
+// Define one end-to-end browser test; Playwright provides a fresh browser page as `page`.
+test('logs in and reaches the home page', async ({ page }) => {
+	// Read real application URLs and test credentials from the environment; do not hard-code invented values.
+	const loginUrl = process.env.LOGIN_URL;
+	const homeUrl = process.env.HOME_URL;
+	const username = process.env.LOGIN_USERNAME;
+	const password = process.env.LOGIN_PASSWORD;
+
+	// Fail with a helpful message if any required value has not been configured.
+	expect(loginUrl, 'Set LOGIN_URL to the existing login-page URL').toBeTruthy();
+	expect(homeUrl, 'Set HOME_URL to the existing home-page URL').toBeTruthy();
+	expect(username, 'Set LOGIN_USERNAME to a test account username').toBeTruthy();
+	expect(password, 'Set LOGIN_PASSWORD to a test account password').toBeTruthy();
+
+	// Open the login page.
+	await page.goto(loginUrl);
+
+	// Find the username input by its accessible label and enter the test username.
+	await page.getByLabel('Username').fill(username);
+
+	// Find the password input by its accessible label and enter the test password.
+	await page.getByLabel('Password').fill(password);
+
+	// Find and click the Login button by its accessible name.
+	await page.getByRole('button', { name: 'Login' }).click();
+
+	// Verify that navigation reached the configured home-page URL.
+	await expect(page).toHaveURL(homeUrl);
+});
+
+// To execute (PowerShell), first ensure the project has @playwright/test installed and its browsers set up.
+// Rename this file to Test2_2.spec.js so Playwright's default test discovery finds it, then run from the project folder:
+// $env:LOGIN_URL = '<existing login URL>'
+// $env:HOME_URL = '<existing home URL>'
+// $env:LOGIN_USERNAME = '<test username>'
+// $env:LOGIN_PASSWORD = '<test password>'
+// npx playwright test .\Test2_2.spec.js
